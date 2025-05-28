@@ -1,8 +1,9 @@
-// src/components/Result.jsx
 import { plants } from '../data/plantData';
 
 export default function Result({ answers, onRestart }) {
   const scoreMap = {};
+  
+  // Calculate base scores
   answers.forEach(tag => {
     plants.forEach(plant => {
       if (plant.tags.includes(tag)) {
@@ -11,126 +12,112 @@ export default function Result({ answers, onRestart }) {
     });
   });
 
-  const topPlant = plants.reduce((best, plant) => {
-    const score = scoreMap[plant.name] || 0;
-    return score > (scoreMap[best.name] || 0) ? plant : best;
-  }, plants[0]);
+  // Normalize scores to account for plants with different numbers of tags
+  const normalizedScores = plants.map(plant => {
+    const rawScore = scoreMap[plant.name] || 0;
+    const normalizedScore = plant.tags.length > 0 ? rawScore / plant.tags.length : 0;
+    return {
+      plant,
+      rawScore,
+      normalizedScore,
+      // Add small random factor to break ties and add variety
+      finalScore: normalizedScore + (Math.random() * 0.1)
+    };
+  });
+
+  // Sort by final score and get top candidates
+  normalizedScores.sort((a, b) => b.finalScore - a.finalScore);
+  
+  // Get all plants with the highest score (in case of ties)
+  const topScore = normalizedScores[0].finalScore;
+  const topCandidates = normalizedScores.filter(item => 
+    Math.abs(item.finalScore - topScore) < 0.15 // Allow for small variations
+  );
+
+  // Randomly select from top candidates
+  const selectedItem = topCandidates[Math.floor(Math.random() * topCandidates.length)];
+  const topPlant = selectedItem.plant;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blush via-white to-mist/20 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full">
-        {/* Result Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/50 text-center">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="inline-block bg-gradient-to-r from-forest to-mist text-white px-6 py-2 rounded-full font-sans font-semibold text-sm mb-4">
-              🌱 Quiz Complete! 🌱
-            </div>
-            <h2 className="text-4xl font-hand text-forest mb-2">
-              Your plant match is...
-            </h2>
-          </div>
+    <div className="min-h-screen bg-white flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl bg-forest p-8 text-center"
+           style={{
+             boxShadow: '6px 6px 0px rgba(0,0,0,0.3)',
+             minHeight: '600px' // Keep consistent size
+           }}>
+        
+        {/* Header */}
+        <div className="mb-8">
+          <h2 className="text-xl font-sans font-bold text-blush mb-6">
+            Your plant match is...
+          </h2>
+        </div>
 
-          {/* Plant Name - Big Reveal */}
-          <div className="mb-8">
-            <h3 className="text-5xl font-hand text-forest mb-4 animate-pulse">
-              {topPlant.name}
-            </h3>
-          </div>
-
-          {/* Plant Image */}
-          <div className="mb-8">
-            <div className="relative inline-block">
-              <div className="absolute inset-0 bg-gradient-to-r from-forest/20 to-mist/20 rounded-3xl blur-xl"></div>
+        {/* Polaroid Plant Result */}
+        <div className="mb-8">
+          <div className="bg-white p-4 mx-auto max-w-sm"
+               style={{
+                 boxShadow: '6px 6px 0px rgba(0,0,0,0.2)'
+               }}>
+            {/* Plant Image */}
+            <div className="bg-gray-100 mb-4 aspect-square flex items-center justify-center overflow-hidden">
               <img
                 src={`/plants/${topPlant.image}`}
                 alt={topPlant.name}
-                className="relative mx-auto max-h-80 w-auto rounded-3xl shadow-2xl border-4 border-white
-                         hover:scale-105 transition-transform duration-300 ease-out"
+                className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextSibling.style.display = 'flex';
                 }}
               />
               {/* Fallback for missing images */}
-              <div className="hidden mx-auto max-h-80 w-80 rounded-3xl shadow-2xl border-4 border-white
-                            bg-gradient-to-br from-blush to-mist/30 items-center justify-center flex-col">
-                <span className="text-6xl mb-4">🪴</span>
-                <span className="font-hand text-2xl text-forest">{topPlant.name}</span>
+              <div className="hidden w-full h-full bg-gray-200 items-center justify-center flex-col">
+                <span className="text-4xl mb-2">🪴</span>
+                <span className="font-medium text-gray-600" style={{ fontFamily: 'Rubik Mono One, monospace' }}>
+                  {topPlant.name}
+                </span>
               </div>
             </div>
-          </div>
-
-          {/* Plant Description */}
-          <div className="mb-8">
-            <p className="text-xl font-sans text-forest/80 leading-relaxed italic">
-              "{topPlant.description}"
-            </p>
-          </div>
-
-          {/* Plant Tags */}
-          <div className="mb-8">
-            <h4 className="font-sans font-semibold text-forest/70 mb-4 text-sm uppercase tracking-wide">
-              Plant Personality Traits
-            </h4>
-            <div className="flex flex-wrap justify-center gap-3">
-              {topPlant.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-2 bg-gradient-to-r from-blush/60 to-mist/60 text-forest 
-                           rounded-full text-sm font-sans font-medium shadow-md
-                           hover:from-blush/80 hover:to-mist/80 transition-colors duration-200
-                           border border-white/50"
-                >
-                  {tag.replace('_', ' ')}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button
-              onClick={onRestart}
-              className="bg-gradient-to-r from-forest to-mist hover:from-forest/90 hover:to-mist/90
-                       text-white font-sans font-semibold px-8 py-3 rounded-2xl shadow-lg hover:shadow-xl
-                       transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-1
-                       flex items-center gap-2"
-            >
-              <span>🌿</span>
-              Pick Again
-            </button>
             
-            <button
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: 'My Plant Match!',
-                    text: `I got ${topPlant.name}! ${topPlant.description}`,
-                    url: window.location.href
-                  });
-                } else {
-                  // Fallback - copy to clipboard
-                  navigator.clipboard.writeText(`I got ${topPlant.name}! ${topPlant.description}`);
-                  alert('Result copied to clipboard!');
-                }
-              }}
-              className="bg-white/50 hover:bg-white/80 text-forest font-sans font-medium px-6 py-3 rounded-2xl 
-                       shadow-lg hover:shadow-xl border border-forest/20 hover:border-forest/40
-                       transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-1
-                       flex items-center gap-2"
-            >
-              <span>📤</span>
-              Share Result
-            </button>
+            {/* Polaroid White Section */}
+            <div className="text-center">
+              <h3 className="text-3xl font-bold text-gray-800 mb-2"
+                  style={{ fontFamily: 'Rubik Mono One, monospace' }}>
+                {topPlant.name}
+              </h3>
+              <p className="text-sm font-sans text-gray-600 leading-relaxed">
+                {topPlant.description}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Fun Stats */}
-        <div className="mt-6 text-center">
-          <p className="text-forest/60 font-sans text-sm">
-            Based on your answers, you matched {scoreMap[topPlant.name] || 0} personality traits with {topPlant.name}!
-          </p>
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 justify-center items-center">
+          <button
+            onClick={() => {
+              // TODO: Open lead form modal or redirect to lead form
+              alert('Lead form would open here!');
+            }}
+            className="bg-mist text-white font-sans font-bold text-lg px-8 py-3
+                     transition-all duration-200 ease-out transform hover:translate-x-1 hover:translate-y-1"
+            style={{
+              boxShadow: '4px 4px 0px #4a5d70'
+            }}
+          >
+            🌱 Get this plant now!
+          </button>
+          
+          <button
+            onClick={onRestart}
+            className="border-2 border-blush hover:border-blush text-blush font-sans font-medium px-6 py-3 mt-2
+                     transition-all duration-200 ease-out transform hover:translate-x-1 hover:translate-y-1"
+            style={{
+              boxShadow: '3px 3px 0px rgba(253, 226, 228, 0.5)'
+            }}
+          >
+            Pick Again
+          </button>
         </div>
       </div>
     </div>
