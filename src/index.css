@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #294A38;
+  --color-blush: #FDE2E4;
+  --color-mist: #6C8EAD;
+  --font-hand: "Patrick Hand", cursive;
+  --font-sans: Outfit, sans-serif;
+}
