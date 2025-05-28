@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useState } from 'react';
 import Quiz from './components/Quiz';
 import Result from './components/Result';
@@ -18,76 +17,60 @@ function App() {
 
   if (!quizStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blush via-white to-mist/20 flex flex-col items-center justify-center p-6">
-        {/* Welcome Card */}
-        <div className="max-w-2xl w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-12 text-center border border-white/50">
-          {/* Header */}
-         <div className="bg-test text-white p-4">
-  Config Test - should be bright red
-</div>
-          <div className="mb-8">
-            <h1 className="text-6xl font-hand text-forest mb-4 leading-tight">
-              🌱 Pick a Plant 🌱
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
+        {/* Square Card with Sharp Shadow */}
+        <div className="w-full max-w-2xl bg-forest p-8 text-center"
+             style={{
+               boxShadow: '6px 6px 0px rgba(0,0,0,0.3)'
+             }}>
+          
+          {/* Title with crisp blocky font */}
+          <div className="mb-6">
+            <h1 className="text-6xl font-black mb-4 leading-tight uppercase text-blush"
+                style={{ 
+                  fontFamily: 'Rubik Mono One, monospace',
+                  letterSpacing: '0.2em'
+                }}>
+              PICK A<br />PLANT
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-forest to-mist rounded-full mx-auto mb-6"></div>
           </div>
 
-          {/* Description */}
-          <div className="mb-10">
-            <p className="text-xl font-sans text-forest/80 leading-relaxed max-w-lg mx-auto">
-              Take our quiz to discover which leafy companion matches your vibe. 
-              <span className="block mt-2 text-lg text-forest/60 italic">
-                Will you get a dramatic Henrik or a chill Bo?
-              </span>
+          {/* Subtitle */}
+          <div className="mb-8">
+            <p className="text-xl font-sans text-white font-light leading-relaxed">
+              Discover which leafy companion<br />matches your vibe
             </p>
           </div>
 
-          {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-            <div className="bg-gradient-to-br from-blush/30 to-white/50 rounded-2xl p-4 border border-white/50">
-              <div className="text-2xl mb-2">🌿</div>
-              <div className="font-sans text-sm text-forest/70">
-                <strong className="text-forest">10 unique plants</strong><br />
-                Each with their own personality
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-mist/30 to-white/50 rounded-2xl p-4 border border-white/50">
-              <div className="text-2xl mb-2">❓</div>
-              <div className="font-sans text-sm text-forest/70">
-                <strong className="text-forest">4 fun questions</strong><br />
-                Quick & personality-based
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-forest/20 to-white/50 rounded-2xl p-4 border border-white/50">
-              <div className="text-2xl mb-2">🎯</div>
-              <div className="font-sans text-sm text-forest/70">
-                <strong className="text-forest">Perfect match</strong><br />
-                Based on your unique vibe
+          {/* Plant Illustrations Strip */}
+          <div className="mb-8">
+            <div className="bg-blush/20 p-6 mx-auto">
+              {/* Placeholder for your long plant illustration */}
+              <div className="h-24 bg-white/20 flex items-center justify-center">
+                <p className="text-blush/60 font-sans text-xs">Your plant illustration strip will go here</p>
               </div>
             </div>
           </div>
 
-          {/* Start Button */}
-          <button
-            onClick={() => setQuizStarted(true)}
-            className="bg-gradient-to-r from-forest to-mist hover:from-forest/90 hover:to-mist/90
-                     text-white font-sans font-bold text-xl px-12 py-4 rounded-2xl shadow-2xl hover:shadow-3xl
-                     transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-y-2
-                     border-2 border-white/20"
-          >
-            Start Quiz →
-          </button>
+          {/* Start Button with Block Shadow */}
+          <div className="mb-6">
+            <button
+              onClick={() => setQuizStarted(true)}
+              className="bg-mist text-white font-sans font-bold text-xl px-12 py-4 
+                       transition-all duration-200 ease-out transform hover:translate-x-1 hover:translate-y-1"
+              style={{
+                boxShadow: '4px 4px 0px #4a5d70'
+              }}
+            >
+              Start Quiz
+            </button>
+          </div>
 
-          {/* Fun subtitle */}
-          <p className="mt-6 text-forest/50 font-sans text-sm italic">
-            Takes less than 2 minutes ⏱️
+          {/* Subtitle */}
+          <p className="text-white/80 font-sans text-base">
+            Takes less than 2 minutes!
           </p>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-10 left-10 text-4xl opacity-20 animate-bounce">🌱</div>
-        <div className="absolute bottom-10 right-10 text-3xl opacity-20 animate-pulse">🪴</div>
-        <div className="absolute top-1/2 left-5 text-2xl opacity-10 animate-ping">🌿</div>
       </div>
     );
   }

@@ -26,9 +26,9 @@ export const questions = [
     text: "Do you even like plants?",
     type: "slider",
     range: [
-      { label: "Of course!", tags: ["confident"] },
-      { label: "I don't know, it's a plant?", tags: ["passive"] },
       { label: "Honestly, no.", tags: ["plant_assassin"] },
+      { label: "I don't know, it's a plant?", tags: ["passive"] },
+      { label: "Of course!", tags: ["confident"] },
     ],
   },
   {
