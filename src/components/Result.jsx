@@ -9,13 +9,11 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
   // Use saved plant if returning user, otherwise calculate new one
   const { selectedItem, topPlant } = useMemo(() => {
     if (isReturningUser && savedPlant) {
-      console.log('Using saved plant for returning user:', savedPlant.name);
       // Return saved plant for returning users
       const mockSelectedItem = { rawScore: 0, plant: savedPlant };
       return { selectedItem: mockSelectedItem, topPlant: savedPlant };
     }
 
-    console.log('Calculating new plant match...');
     // Normal plant selection logic for new results
     const scoreMap = {};
 
@@ -27,14 +25,14 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
       });
     });
 
-    const normalizedScores = plants.map(plant => {
+const normalizedScores = plants.map(plant => {
       const rawScore = scoreMap[plant.name] || 0;
       const normalizedScore = plant.tags.length > 0 ? rawScore / plant.tags.length : 0;
       return {
         plant,
         rawScore,
         normalizedScore,
-        finalScore: normalizedScore + (Math.random() * 0.1)
+        finalScore: normalizedScore + (Math.random() * 0.6) // Increased from 0.1 to 0.6 for more variety!
       };
     });
 
@@ -42,13 +40,12 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
 
     const topScore = normalizedScores[0].finalScore;
     const topCandidates = normalizedScores.filter(item =>
-      Math.abs(item.finalScore - topScore) < 0.15
+      Math.abs(item.finalScore - topScore) < 0.4 // Increased from 0.15 to 0.4 for bigger candidate pool
     );
 
     const selectedItem = topCandidates[Math.floor(Math.random() * topCandidates.length)];
     const topPlant = selectedItem.plant;
 
-    console.log('Selected plant:', topPlant.name);
     return { selectedItem, topPlant };
   }, [answers, isReturningUser, savedPlant]);
 
@@ -64,7 +61,6 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
 
       try {
         localStorage.setItem('plantQuizResult', JSON.stringify(resultData));
-        console.log('Saved result to localStorage:', topPlant.name);
       } catch (error) {
         console.error('Error saving to localStorage:', error);
       }
@@ -73,7 +69,6 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
 
   // Handle CTA click - mark as used in localStorage
   const handleCTAClick = () => {
-    console.log('CTA clicked - marking result as used');
 
     try {
       const saved = localStorage.getItem('plantQuizResult');
@@ -82,7 +77,6 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
         parsedResult.ctaClicked = true;
         parsedResult.ctaClickedAt = Date.now();
         localStorage.setItem('plantQuizResult', JSON.stringify(parsedResult));
-        console.log('Marked result as used in localStorage');
       }
     } catch (error) {
       console.error('Error updating localStorage:', error);
