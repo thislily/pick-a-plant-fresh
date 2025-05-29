@@ -19,11 +19,6 @@ git clone https://github.com/thislily/pick-a-plant-fresh.git
 cd pick-a-plant-fresh
 npm install && npm run dev
 ```
-```bash
-git clone https://github.com/thislily/pick-a-plant-fresh.git
-cd pick-a-plant-fresh
-npm install && npm run dev
-```
 
 ## Contact
 📧 [lilywatson.dev@gmail.com](mailto:lilywatson.dev@gmail.com)
