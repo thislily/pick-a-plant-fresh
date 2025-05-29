@@ -5,6 +5,7 @@ import FormRenderer from './components/FormRenderer';
 import Result from './components/Result';
 import formConfig from './config/formConfig.json';
 import { parseFormConfig, debugConfig } from './utils/configParser';
+import Footer from './components/Footer';
 
 function App() {
   const [appState, setAppState] = useState('loading'); // loading, ready, form, result, error
@@ -96,7 +97,6 @@ function App() {
    */
   const handleFormProgress = (currentStep, totalSteps) => {
     const progressPercent = (currentStep / totalSteps) * 100;
-
 
     // Could integrate with analytics here
     // analytics.track('form_progress', { step: currentStep, total: totalSteps, percent: progressPercent });
@@ -298,6 +298,9 @@ function App() {
           Takes less than 2 minutes!
         </p>
       </div>
+      <Footer />
+
+      {/* Debug Info for Development */}
     </div>
   );
 }
