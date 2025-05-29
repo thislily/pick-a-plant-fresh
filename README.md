@@ -1,5 +1,5 @@
 # Pick a Plant 🌱
-![Pick a Plant](public/plants/Liv.jpg)
+![Pick a Plant](public/plants/plant-group-shot.jpg)
 
 ## What's this?
 A quiz that matches you with your plant soulmate. Because plants have personalities too.
