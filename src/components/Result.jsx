@@ -114,7 +114,7 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
                 </h3>
               </>
             ) : (
-              <h2 className="text-3xl font-sans font-bold text-blush mb-6">
+              <h2 className="text-2xl font-sans font-bold text-blush mb-6">
                 Your plant match is...
               </h2>
             )}
@@ -145,7 +145,7 @@ export default function Result({ answers, onRestart, isReturningUser = false, sa
               </div>
 
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2"
+                <h3 className="text-3xl font-bold text-gray-800 mb-2"
                   style={{ fontFamily: 'Rubik Mono One, monospace' }}>
                   {topPlant.name}
                 </h3>
