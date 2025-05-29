@@ -1,5 +1,4 @@
 // src/components/FormRenderer.jsx - JSON-to-React Form Renderer
-// Demonstrates exactly what Nettbureau does: React apps configured through JSON
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { validateFormField } from '../utils/formValidator';
@@ -26,13 +25,11 @@ export default function FormRenderer({ config, onComplete, onProgress, className
   // Debug logging for development
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
-        console.log('🔧 Form Renderer Initialized:', {
-            currentStep,
-            totalQuestions: questions.length,
-            currentQuestion: currentQuestion ? currentQuestion.text : 'None',
-            responses: Object.keys(responses).length,
-            progress: `${Math.round(progress)}%`
-        });
+      console.log(`📊 Form step ${currentStep + 1}/${questions.length}`, {
+        questionId: currentQuestion?.id,
+        questionType: currentQuestion?.type,
+        hasResponse: !!responses[currentQuestion?.id]
+      });
     }
   }, [currentStep, questions.length, currentQuestion, responses]);
 
@@ -51,14 +48,12 @@ export default function FormRenderer({ config, onComplete, onProgress, className
       
       if (error) {
         setErrors(prev => ({ ...prev, [questionId]: error }));
-        console.warn(`❌ Validation failed for question ${questionId}:`, error);
         return false;
       } else {
         setErrors(prev => ({ ...prev, [questionId]: null }));
         return true;
       }
     } catch (validationError) {
-      console.error(`🚨 Validation error for question ${questionId}:`, validationError);
       setErrors(prev => ({ 
         ...prev, 
         [questionId]: 'Validation error occurred. Please try again.' 
@@ -90,7 +85,12 @@ export default function FormRenderer({ config, onComplete, onProgress, className
 
     // Clear any existing errors immediately
     setErrors(prev => ({ ...prev, [questionId]: null }));
-
+    
+    console.log(`✅ Multiple choice selected:`, {
+      questionId,
+      optionId: option.id,
+      tags: option.tags
+    });
 
     // Auto-advance after a short delay
     setTimeout(() => {
@@ -253,6 +253,12 @@ export default function FormRenderer({ config, onComplete, onProgress, className
         }
       };
 
+      console.log('🎉 Form completed successfully:', {
+        responses: Object.keys(responses).length,
+        tags: allTags.length,
+        version: formData.formVersion
+      });
+
       // Call completion handler
       await onComplete(formData);
       
@@ -348,12 +354,12 @@ export default function FormRenderer({ config, onComplete, onProgress, className
               step={validation.step ?? 1}
               value={currentValue}
               onChange={(e) => handleSlider(Number(e.target.value))}
-              className="w-full h-2 bg-mist/30 appearance-none cursor-pointer"
+              className="w-full h-2 bg-mist/30 appearance-none cursor-pointer slider-custom"
               aria-label={currentQuestion.text}
               aria-describedby={`slider-labels-${questionId}`}
             />
-            <style jsx>{`
-              input[type="range"]::-webkit-slider-thumb {
+            <style>{`
+              .slider-custom::-webkit-slider-thumb {
                 appearance: none;
                 width: 24px;
                 height: 24px;
@@ -363,7 +369,7 @@ export default function FormRenderer({ config, onComplete, onProgress, className
                 cursor: pointer;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.2);
               }
-              input[type="range"]::-moz-range-thumb {
+              .slider-custom::-moz-range-thumb {
                 width: 24px;
                 height: 24px;
                 border-radius: 50%;

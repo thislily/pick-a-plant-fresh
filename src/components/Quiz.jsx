@@ -1,3 +1,8 @@
+// Description: A React component for a quiz application that displays questions and collects user answers.
+// No longer in use, but kept for reference.
+// It supports multiple choice and slider questions, tracks progress, and handles user input.
+// src/components/Quiz.jsx
+
 import { useState } from 'react';
 import { questions } from '../data/quizQuestions';
 

@@ -1,4 +1,5 @@
 // src/components/Result.jsx - Enhanced with localStorage
+// Description: This component displays the result of the plant quiz, showing the top plant match based on user answers. It handles both new results and returning users with saved plants, and includes a lead form modal for capturing user information.
 import { plants } from '../data/plantData';
 import { useState, useMemo, useEffect } from 'react';
 import LeadFormModal from './LeadFormModal';
