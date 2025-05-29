@@ -1,0 +1,190 @@
+{
+  "formMetadata": {
+    "title": "Pick A Plant",
+    "description": "Discover which leafy companion matches your vibe",
+    "version": "1.0",
+    "lastModified": "2025-05-29",
+    "author": "Plant Quiz System"
+  },
+  "styling": {
+    "theme": "plant-quiz",
+    "colors": {
+      "primary": "#294A38",
+      "secondary": "#FDE2E4", 
+      "accent": "#6C8EAD"
+    }
+  },
+  "questions": [
+    {
+      "id": 1,
+      "text": "How committed are you to being a plant parent?",
+      "type": "multiple_choice",
+      "required": true,
+      "validation": {
+        "minSelections": 1,
+        "maxSelections": 1
+      },
+      "options": [
+        { 
+          "id": "assassin",
+          "text": "Not at all, I am a plant assassin.", 
+          "tags": ["plant_assassin"],
+          "weight": 1.0
+        },
+        { 
+          "id": "occasional",
+          "text": "I will occasionally remember they exist.", 
+          "tags": ["low_maintenance"],
+          "weight": 1.0
+        },
+        { 
+          "id": "committed",
+          "text": "100%, that's my leafy little baby!", 
+          "tags": ["high_maintenance"],
+          "weight": 1.0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Where will your plant live?",
+      "type": "multiple_choice",
+      "required": true,
+      "validation": {
+        "minSelections": 1,
+        "maxSelections": 1
+      },
+      "options": [
+        { 
+          "id": "bright",
+          "text": "Bright and airy windowsill.", 
+          "tags": ["bright"],
+          "weight": 1.0
+        },
+        { 
+          "id": "shady",
+          "text": "Shady sad corner of death.", 
+          "tags": ["shady"],
+          "weight": 1.0
+        },
+        { 
+          "id": "bookshelf",
+          "text": "A bookshelf, purely for the vibes.", 
+          "tags": ["no_fuss"],
+          "weight": 1.0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Do you even like plants?",
+      "type": "slider",
+      "required": true,
+      "validation": {
+        "min": 0,
+        "max": 2,
+        "step": 1
+      },
+      "sliderConfig": {
+        "labels": ["Honestly, no.", "I don't know, it's a plant?", "Of course!"],
+        "tags": [["plant_assassin"], ["passive"], ["confident"]],
+        "weights": [1.0, 1.0, 1.0]
+      }
+    },
+    {
+      "id": 4,
+      "text": "What's your personal aesthetic?",
+      "type": "multiple_choice",
+      "required": true,
+      "validation": {
+        "minSelections": 1,
+        "maxSelections": 1
+      },
+      "options": [
+        { 
+          "id": "cute",
+          "text": "Cute and fun! Matching sets and matcha lattes in my selfies.", 
+          "tags": ["cute", "confident"],
+          "weight": 1.0
+        },
+        { 
+          "id": "moody",
+          "text": "Moody, dramatic, halfway to becoming a bond villain.", 
+          "tags": ["moody", "dramatic"],
+          "weight": 1.0
+        },
+        { 
+          "id": "chaos",
+          "text": "Chaos gremlin who forgot their laundry again.", 
+          "tags": ["chaos"],
+          "weight": 1.0
+        }
+      ]
+    }
+  ],
+  "resultConfig": {
+    "calculationMethod": "weighted_tags",
+    "displayType": "polaroid",
+    "ctaText": "Get this plant now!",
+    "restartText": "Pick Again",
+    "randomizationFactor": 0.1
+  },
+  "leadFormConfig": {
+    "title": "Get Your Perfect Plant",
+    "subtitle": "You deserve the perfect plant for your space!",
+    "fields": [
+      {
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "required": true,
+        "validation": {
+          "minLength": 2,
+          "maxLength": 50,
+          "pattern": "^[a-zA-ZÀ-ÿ\\u0100-\\u017F\\u0180-\\u024F\\u1E00-\\u1EFF\\s\\-'\\.]+$",
+          "patternMessage": "Name can only contain letters, spaces, hyphens, and apostrophes"
+        }
+      },
+      {
+        "name": "email", 
+        "type": "email",
+        "label": "Email",
+        "required": true,
+        "validation": {
+          "maxLength": 254,
+          "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+          "patternMessage": "Please enter a valid email address"
+        }
+      },
+      {
+        "name": "interest",
+        "type": "select",
+        "label": "I'm interested because:",
+        "required": false,
+        "options": [
+          { "value": "", "text": "Select a reason..." },
+          { "value": "beginner", "text": "I'm a beginner and want something easy" },
+          { "value": "expand", "text": "I want to expand my plant collection" },
+          { "value": "specific", "text": "I'm looking for this specific type" },
+          { "value": "gift", "text": "It's for a gift" },
+          { "value": "other", "text": "Other" }
+        ]
+      },
+      {
+        "name": "timeline",
+        "type": "radio",
+        "label": "When are you looking to get your plant?",
+        "required": false,
+        "options": [
+          { "value": "week", "text": "This week" },
+          { "value": "month", "text": "This month" },
+          { "value": "browsing", "text": "Just browsing" }
+        ]
+      }
+    ],
+    "submitText": "🌱 Get My Plant Info!",
+    "loadingText": "🌱 Sending...",
+    "successTitle": "SUCCESS!",
+    "privacyText": "We'll never spam you. Plant promise! 🌿"
+  }
+}

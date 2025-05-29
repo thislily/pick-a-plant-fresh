@@ -1,5 +1,6 @@
 // src/components/LeadFormModal.jsx
 import { useState } from 'react';
+import { plants } from '../data/plantData';
 
 export default function LeadFormModal({ isOpen, onClose, plantName = "Your Plant" }) {
   const [formData, setFormData] = useState({
@@ -60,7 +61,7 @@ export default function LeadFormModal({ isOpen, onClose, plantName = "Your Plant
     
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Lead submitted:', formData);
+      console.log('Lead submitted:', { ...formData, selectedPlant: plantName });
       setSubmitted(true);
       
       setTimeout(() => {
@@ -191,7 +192,7 @@ export default function LeadFormModal({ isOpen, onClose, plantName = "Your Plant
                     <option value="">Select a reason...</option>
                     <option value="beginner">I'm a beginner and want something easy</option>
                     <option value="expand">I want to expand my plant collection</option>
-                    <option value="specific">I'm looking for this specific type</option>
+                    <option value="specific">I'm very lonely</option>
                     <option value="gift">It's for a gift</option>
                     <option value="other">Other</option>
                   </select>
@@ -231,25 +232,38 @@ export default function LeadFormModal({ isOpen, onClose, plantName = "Your Plant
                            disabled:opacity-50 disabled:transform-none"
                   style={{ boxShadow: '3px 3px 0px rgba(41, 74, 56, 0.6)' }}
                 >
-                  {isSubmitting ? '🌱 Sending...' : '🌱 Get My Plant Info!'}
+                  {isSubmitting ? 'Sending...' : 'Get My Plant Info!'}
                 </button>
               </div>
 
               <p className="text-xs text-gray-500 font-sans mt-3 text-center">
-                We'll never spam you. Plant promise! 🌿
+                We'll never spam you. Plant promise!
               </p>
             </>
           ) : (
-            <div className="text-center py-6">
-              <div className="text-5xl mb-3">🌱</div>
-              <h3 className="text-xl font-bold text-forest mb-2"
-                  style={{ fontFamily: 'Rubik Mono One, monospace' }}>
-                SUCCESS!
-              </h3>
-              <p className="text-gray-600 font-sans text-sm">
-                We'll be in touch about {plantName} soon!
-              </p>
-            </div>
+<div className="text-center py-6">
+  {/* Circular Plant Image */}
+  <div className="w-16 h-16 mx-auto mb-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+    <img
+      src={`/plants/${plants.find(plant => plant.name === plantName)?.image}`}
+      alt={plantName}
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        e.target.style.display = 'none';
+        e.target.nextSibling.style.display = 'flex';
+      }}
+    />
+    <div className="hidden w-full h-full items-center justify-center text-3xl">🌱</div>
+  </div>
+  
+  <h3 className="text-xl font-bold text-forest mb-2"
+      style={{ fontFamily: 'Rubik Mono One, monospace' }}>
+    SUCCESS!
+  </h3>
+  <p className="text-gray-600 font-sans text-sm">
+    We'll be in touch about {plantName} soon!
+  </p>
+</div>
           )}
         </div>
       </div>
