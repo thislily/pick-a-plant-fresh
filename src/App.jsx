@@ -1,5 +1,4 @@
 // src/App.jsx - Complete JSON-Configured Form System
-// Demonstrates exactly what Nettbureau does: React apps configured through JSON
 
 import { useState, useEffect } from 'react';
 import FormRenderer from './components/FormRenderer';
@@ -47,7 +46,6 @@ function App() {
 
   /**
    * Check for saved results from previous sessions
-   * Demonstrates state persistence and user experience optimization
    */
   const checkForSavedResults = () => {
     try {
@@ -231,7 +229,7 @@ function App() {
   if (appState === 'result' && formData) {
     return (
       <Result
-        answers={formData.tags}  // Convert back to your original format
+        answers={formData.tags}
         onRestart={handleRestart}
       />
     );

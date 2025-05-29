@@ -1,9 +1,8 @@
 // src/utils/formValidator.js - Comprehensive Form Validation
-// Demonstrates real-time validation and user-friendly error handling
 
 /**
  * Main validation function for form fields
- * Shows systematic approach to handling different question types
+ * Handles various question types and their specific validation rules
  */
 export const validateFormField = (question, response) => {
   // Handle empty/null responses first
@@ -36,11 +35,9 @@ export const validateFormField = (question, response) => {
         return validateCheckbox(question, response);
       
       default:
-        console.warn(`Unknown question type for validation: ${question.type}`);
         return null;
     }
   } catch (error) {
-    console.error(`Validation error for question ${question.id}:`, error);
     return 'Validation error occurred. Please try again.';
   }
 };
@@ -126,7 +123,6 @@ const validateText = (question, response) => {
         return validation.patternMessage || 'Invalid format';
       }
     } catch (error) {
-      console.error('Invalid regex pattern in validation:', validation.pattern);
       return 'Configuration error in validation pattern';
     }
   }
@@ -270,7 +266,6 @@ const isEmptyResponse = (response) => {
 
 /**
  * Helper function to get user-friendly field name
- * Creates better error messages
  */
 const getFieldDisplayName = (question) => {
   // Use label if available, otherwise clean up the question text
@@ -287,7 +282,6 @@ const getFieldDisplayName = (question) => {
 
 /**
  * Email format validation
- * More robust than simple regex
  */
 const isValidEmailFormat = (email) => {
   // Multiple validation checks for better accuracy
@@ -339,150 +333,6 @@ export const validateFormResponse = (questions, responses) => {
 };
 
 /**
- * Lead form specific validation
- * Handles more complex form fields like contact forms
- */
-export const validateLeadFormField = (fieldConfig, value) => {
-  if (!fieldConfig) {
-    console.error('Field configuration is required for validation');
-    return 'Configuration error';
-  }
-
-  // Handle empty values
-  if (isEmptyLeadFormValue(value)) {
-    return fieldConfig.required ? `${fieldConfig.label} is required` : null;
-  }
-
-  const validation = fieldConfig.validation || {};
-
-  // Type-specific validation
-  switch (fieldConfig.type) {
-    case 'text':
-    case 'textarea':
-      return validateLeadFormText(fieldConfig, value, validation);
-    
-    case 'email':
-      return validateLeadFormEmail(fieldConfig, value, validation);
-    
-    case 'select':
-      return validateLeadFormSelect(fieldConfig, value);
-    
-    case 'radio':
-      return validateLeadFormRadio(fieldConfig, value);
-    
-    default:
-      return null;
-  }
-};
-
-/**
- * Lead form text validation
- * Enhanced text validation for contact forms
- */
-const validateLeadFormText = (fieldConfig, value, validation) => {
-  const text = String(value).trim();
-
-  // Length validation
-  if (validation.minLength && text.length < validation.minLength) {
-    return `${fieldConfig.label} must be at least ${validation.minLength} characters`;
-  }
-
-  if (validation.maxLength && text.length > validation.maxLength) {
-    return `${fieldConfig.label} must be less than ${validation.maxLength} characters`;
-  }
-
-  // Pattern validation
-  if (validation.pattern) {
-    try {
-      const regex = new RegExp(validation.pattern);
-      if (!regex.test(text)) {
-        return validation.patternMessage || `${fieldConfig.label} format is invalid`;
-      }
-    } catch (error) {
-      console.error('Invalid regex in lead form validation:', validation.pattern);
-      return 'Validation configuration error';
-    }
-  }
-
-  // Special validation for name fields
-  if (fieldConfig.name === 'name' || fieldConfig.name.includes('name')) {
-    if (text.length < 2) {
-      return 'Name must be at least 2 characters';
-    }
-    if (text.length > 50) {
-      return 'Name must be less than 50 characters';
-    }
-    // Allow international characters in names
-    const nameRegex = /^[a-zA-ZÀ-ÿ\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF\s\-'\.]+$/;
-    if (!nameRegex.test(text)) {
-      return 'Name can only contain letters, spaces, hyphens, and apostrophes';
-    }
-  }
-
-  return null;
-};
-
-/**
- * Lead form email validation
- * Enhanced email validation for contact forms
- */
-const validateLeadFormEmail = (fieldConfig, value, validation) => {
-  const email = String(value).toLowerCase().trim();
-
-  if (!isValidEmailFormat(email)) {
-    return 'Please enter a valid email address';
-  }
-
-  if (validation.maxLength && email.length > validation.maxLength) {
-    return 'Email address is too long';
-  }
-
-  return null;
-};
-
-/**
- * Lead form select validation
- */
-const validateLeadFormSelect = (fieldConfig, value) => {
-  if (!value || value === '') {
-    return fieldConfig.required ? `Please select ${fieldConfig.label.toLowerCase()}` : null;
-  }
-
-  const validValues = fieldConfig.options?.map(opt => opt.value) || [];
-  if (!validValues.includes(value)) {
-    return 'Invalid selection';
-  }
-
-  return null;
-};
-
-/**
- * Lead form radio validation
- */
-const validateLeadFormRadio = (fieldConfig, value) => {
-  if (!value) {
-    return fieldConfig.required ? `Please select ${fieldConfig.label.toLowerCase()}` : null;
-  }
-
-  const validValues = fieldConfig.options?.map(opt => opt.value) || [];
-  if (!validValues.includes(value)) {
-    return 'Invalid selection';
-  }
-
-  return null;
-};
-
-/**
- * Helper to check if lead form value is empty
- */
-const isEmptyLeadFormValue = (value) => {
-  if (value === null || value === undefined) return true;
-  if (typeof value === 'string' && value.trim() === '') return true;
-  if (Array.isArray(value) && value.length === 0) return true;
-  return false;
-};
-
-/**
  * Debounced validation for real-time feedback
  * Prevents excessive validation calls during typing
  */
@@ -517,7 +367,6 @@ export const validateMultipleFields = (validationTasks) => {
         hasErrors = true;
       }
     } catch (validationError) {
-      console.error(`Validation error for field ${fieldId}:`, validationError);
       results[fieldId] = 'Validation error occurred';
       hasErrors = true;
     }
