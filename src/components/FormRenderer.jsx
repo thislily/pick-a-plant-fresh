@@ -85,12 +85,7 @@ export default function FormRenderer({ config, onComplete, onProgress, className
 
     // Clear any existing errors immediately
     setErrors(prev => ({ ...prev, [questionId]: null }));
-    
-    console.log(`✅ Multiple choice selected:`, {
-      questionId,
-      optionId: option.id,
-      tags: option.tags
-    });
+
 
     // Auto-advance after a short delay
     setTimeout(() => {
@@ -252,12 +247,6 @@ export default function FormRenderer({ config, onComplete, onProgress, className
           formConfig: config.formMetadata
         }
       };
-
-      console.log('🎉 Form completed successfully:', {
-        responses: Object.keys(responses).length,
-        tags: allTags.length,
-        version: formData.formVersion
-      });
 
       // Call completion handler
       await onComplete(formData);
