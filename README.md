@@ -25,7 +25,6 @@ React, Vite, Tailwind CSS, JSON configuration, Netlify
 ```bash
 git clone https://github.com/thislily/pick-a-plant-fresh.git
 cd pick-a-plant-fresh
-git checkout json-form-system
 npm install && npm run dev
 ```
 
